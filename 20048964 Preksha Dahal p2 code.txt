@@ -1,0 +1,299 @@
+#bin/bash/sh
+
+#Defining the parameters for username and ID
+user=$1
+id=$2
+
+#To check if the user entered username and ID is correct.
+if [[ $# == 2 ]] #Condition for correct userame and ID.
+then
+	echo ""
+	echo "#################################################################"
+	echo "#                                                               #"
+	echo "#       You have entered the correct Username and ID.           #"
+	echo "#                                                               #" 
+	echo "#################################################################"
+elif [[ ! $user =~ [a-zA-Z] ]] #If the user has entered incorrect or no username
+then
+	echo "################################################################" 
+	echo "#                                                              #" 
+	echo "#       Make sure you have used at least one character.        #"
+	echo "#                                                              #"
+	echo "################################################################"
+elif [[ ! $id =~ [0-9] ]] #If the user has entered character instead of numbers in ID.
+then
+	echo "###############################################################"
+	echo "#                                                             #"
+	echo "#                 Your ID is a set of number.                 #"
+	echo "#                                                             #"
+	echo "###############################################################"
+else	#If the user enters incorrect format of username and ID.
+	echo "###############################################################"
+        echo "#                                                             #"
+        echo "#        The format should be Username and ID.                #"
+        echo "#                                                             #"
+        echo "###############################################################"
+fi
+
+#To show the user details at the start of the program after the user entered correct secretkey.
+function displayUserDetails() {
+	echo ""
+	echo "###############################################################"
+        echo "#                                                             #"
+        echo "#                  Welcome to our program!!                   #"
+        echo "#                                                             #"
+        echo "###############################################################"
+	echo "###############################################################"
+        echo "#                                                             #"
+        echo "# User ID = $id                                               #"
+        echo "#                                                             #"
+	echo "# User Name = $user                                         #"
+	echo "#                                                             #"
+        echo "###############################################################"
+	echo ""
+	echo ""
+	echo "______________________________________________________________"
+	echo ""
+	echo "		Execution Date : "$(date '+%d/%m/%y')
+	echo "______________________________________________________________"
+	echo ""
+	echo ""
+	echo "______________________________________________________________"
+	echo ""
+	echo "		Execution Time : "$(date '+%H:%M:%S')
+	echo "______________________________________________________________"
+	displayBandList
+}
+
+#Function to display the Band Lists with their codes.
+function displayBandList () {
+	echo "##############################################"
+	echo "#                    |                       #"
+	echo "#    Bands           |          Codes        #"
+	echo "#                    |                       #"
+	echo "##############################################"
+	echo "#                    |                       #"
+	echo "#    Beatles         |            BEA        #"
+	echo "#                    |                       #"
+	echo "#    AC/DC           |            AD         #"
+	echo "#                    |                       #"
+	echo "#    Queen           |            QUE        #"
+        echo "#                    |                       #"
+	echo "#    Blondie         |            BLO        #"
+	echo "#                    |                       #"
+	echo "#    Nirvana         |            NIR        #"
+	echo "#                    |                       #"
+	echo "##############################################"
+	selectionOFBestBand
+}
+
+#Function to select the best band.
+function selectionOFBestBand() {
+	echo ""
+	read -p  "Select the best band: " bandCode
+	if [ ${#bandCode} -ne 3 ]
+	then
+		echo "###############################################################"
+	        echo "#                                                             #"
+	        echo "#               You entered incorrect code.                   #"
+	        echo "#                                                             #"
+	        echo "###############################################################"
+		selectionOFBestBand
+	else
+		if [ $bandCode = $bestBand ] #Condition for the user enter correct Band Name.
+		then
+			echo "###############################################################"
+		        echo "#                                                             #"
+		        echo "#    	       	    CONGRATULATIONS!!                        #"
+			echo "#                                                             #"
+		        echo "#                                                             #"
+			echo "#         Your assumption about the best band is correct.     #"
+		        echo "###############################################################"
+			bandMembers
+		else  #Until condition to display the information about wrong assumption.
+			until [ $bandCode = $bestBand ]
+			do
+				echo "Your assumption is incorrect." 
+				selectionOFBestBand
+			done
+		fi
+	fi
+}
+
+#Function to display about the band members and their codes.
+function bandMembers() {
+	echo "***************************************************"
+	echo "*                      !#!                        *" 
+	echo "*     Members          !#!         Codes          *"
+	echo "***************************************************"
+	echo "*                      !#!                        *"
+	echo "*    John Lennon       !#!          JL            *"
+	echo "*                      !#!                        *"
+	echo "*    Angus Young       !#!          AY            *"
+	echo "*                      !#!                        *"
+	echo "*    Freddie Mercury   !#!          FM            *"
+	echo "*                      !#!                        *"
+	echo "*    Debbie Harry      !#!          DH            *"
+	echo "*                      !#!                        *"
+	echo "*    Kurt Coban        !#!          KC            *"
+	echo "*                      !#!                        *"
+	echo "***************************************************"
+	bandMembersSelection
+}
+
+function bandMembersSelection() {
+	read -p "Enter the code of any three band members: " Member1 Member2 Member3
+	# If the user selects more or less than 3 numbers while selecting the band member.
+	if [[ ${#Member1} -ne 2 || ${#Member2} -ne 2 || ${#Member3} -ne 2 ]]
+	then
+		echo "###############################################################"
+        	echo "#                                                             #"
+	        echo "#       You are supposed to use three member codes.           #"	
+	        echo "#                                                             #"
+	        echo "###############################################################"
+		bandMembersSelection
+	else
+	# If the user enters same number for band member multiple times.
+		if [[ $Member1 == $Member2 ]] || [[ $Member2 == $Member3 ]] || [[ $Member1 == $Member3 ]]
+	then
+		echo "###########################################################################################"
+	        echo "#                                                                                         #"
+  	        echo "#           Please note that you cannot enter the same number multiple times.	        #"
+ 	        echo "#                                                                                         #"
+	        echo "###########################################################################################"
+		bandMembersSelection
+	else
+		# To display the contents of the available files
+		PS3="Choose one of the member from below; "
+		select Member in $Member1 $Member2 $Member3
+		do
+			case $Member in 
+			"JL")
+				cat JL
+				Repeat
+				;;
+
+			"AY")
+				cat AY
+				Repeat
+			;;
+
+			"FM")
+				cat FM
+				Repeat
+			;;
+			"DH")
+				echo "################################################################"
+        			echo "#                                                              #"
+       				echo "#   We are sorry to inform you that the file does not exist.   #"
+        			echo "#                                                              #"
+        			echo "################################################################"
+				displayBandList
+			;;
+			"KC")
+                                echo "################################################################"
+                                echo "#                                                              #"
+                                echo "#   We are sorry to inform you that the file does not exist.   #"
+                                echo "#                                                              #"
+                                echo "################################################################"                                                                                                                                                                               echo "################################################################"                                                                                                     echo "#                                                              #"                                                                                                     echo "#   We are sorry to inform you that the file does not exist.   #"                                                                                                     echo "#                                                   echo "################################################################"  
+				displayBandList
+			;;
+			*)
+                                echo "################################################################"
+                                echo "#                                                              #"
+                                echo "#                       Cannot Operate                         #"
+                                echo "#                                                              #"
+                                echo "################################################################"
+				continue
+			;;
+			esac
+			done
+		fi
+	fi
+}
+
+function Repeat() {
+        echo "____________________________________________________________"
+	echo ""
+	read -p "Do you want to exit the preogram ? :( (Yes/No): " reply
+	echo "____________________________________________________________"
+	if [ $reply = "No" ]
+	then
+		displayBandList
+	elif [ $reply = "Yes" ]
+	then
+		echo "____________________________________________"
+		echo ""
+		echo "   Bye! Had a wonderful time with you :)    "
+		echo "____________________________________________"
+		exit 2
+	else
+		echo "____________________________________________"
+                echo ""
+                echo "              Invalid Input                 "
+                echo "____________________________________________"
+		Repeat
+	fi
+}
+
+#Parameter for the selection of Best Band.
+bestBand=QUE
+
+#Defining the password for secret key.
+secretKey="NOSp2"
+
+#Initializing the value of check to count the number of chances to enter the secret key.
+check=1
+
+# IF condition to provide 3 chances for the user to enter correct secret key.
+if [ $# = 0 ]
+then
+	echo ""
+	echo "Enter Parameters"
+	echo ""
+elif [ $# = 1 ]
+then 
+	echo ""
+	echo "You have not entered the username or ID"
+	echo ""
+else
+	read -p "Enter the password/Secret Key: " -s value
+	if [[ $value == $secretKey ]]
+	then
+		displayUserDetails
+	else
+		for (( tries=1; tries<4; tries++ ))
+		do
+			echo ""
+			echo "You have entered wrong key $check time."
+			if [ $check = 2 ]
+			then
+				echo ""
+				echo "You have got one last chance to enter the correct key."
+			fi
+			read -p "Enter the secret key or password: " -s key
+			if [[ $key == $secretKey ]]
+			then
+		   		displayUserDetails
+				break
+			else
+				check=$((check+1))
+				if [ $check = 3 ]
+				then
+					echo ""
+					echo "____________________________________________________________________"
+					echo ""
+					echo "       Unfortunately, you have already used all the chances.        "
+					echo "____________________________________________________________________"
+					sleep 2
+					echo "____________________________________________"
+                			echo ""
+        	        		echo "   You can always choose to start again.    "
+	                		echo "____________________________________________"
+					break
+					exit 1
+				fi
+			fi
+		done
+	fi
+fi
